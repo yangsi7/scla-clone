@@ -1,0 +1,58 @@
+graph TD
+    A[SCLA Mobile App] --> B[Authentication Module]
+    A --> C[Main App Container]
+    
+    B --> D[Welcome Screen]
+    B --> E[Sign In Screen]
+    B --> F[Device Pairing Flow]
+    
+    C --> G[Bottom Tab Navigation]
+    C --> H[Top Navigation Bar]
+    C --> I[Side Navigation Menu]
+    
+    G --> J[Home Tab]
+    G --> K[Log Tab]
+    G --> L[Diary Tab]
+    
+    H --> M[Signal Status Indicator]
+    H --> N[Help Icon]
+    H --> O[Settings Icon]
+    
+    J --> P[Dashboard Cards]
+    P --> Q[Garment Signal Status Card]
+    P --> R[Holter Study Progress Card]
+    P --> S[14-Day Progress Card]
+    
+    Q --> T[ECG Viewer Component]
+    T --> U[Real-time Waveform Display]
+    T --> V[Signal Quality Indicators]
+    T --> W[Scale Controls]
+    
+    K --> X[Add Data Modal]
+    X --> Y[Symptom Entry Form]
+    X --> Z[Blood Pressure Form]
+    
+    Y --> AA[Symptom Selection Grid]
+    Y --> BB[Symptom Details Form]
+    BB --> CC[Intensity Slider]
+    BB --> DD[Trigger Selection]
+    BB --> EE[Duration Controls]
+    BB --> FF[Notes Input]
+    
+    L --> GG[Calendar Component]
+    L --> HH[Entry List]
+    HH --> II[Entry Cards]
+    II --> JJ[Symptom Entry Card]
+    II --> KK[Blood Pressure Entry Card]
+    
+    I --> LL[Settings Menu]
+    LL --> MM[Device Management]
+    LL --> NN[Advanced Settings]
+    LL --> OO[Manage Symptoms & Triggers]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style G fill:#e8f5e8
+    style T fill:#fff3e0
+    style X fill:#fce4ec
+

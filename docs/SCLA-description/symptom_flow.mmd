@@ -1,0 +1,44 @@
+graph TD
+    A[Home Dashboard] --> B[Tap Log Tab]
+    B --> C[Add Data Modal]
+    C --> D[Select Symptom]
+    D --> E[Symptom Entry Form]
+    
+    E --> F[Select Date/Time]
+    E --> G[Search/Select Symptoms]
+    G --> H[Predefined Symptoms]
+    G --> I[Custom Symptoms]
+    
+    H --> J{Add More Details?}
+    I --> J
+    
+    J -->|No| K[Save Basic Entry]
+    J -->|Yes| L[Symptom Details Form]
+    
+    L --> M[Set Intensity 0-10]
+    L --> N[Select Triggers]
+    N --> O[Predefined Triggers]
+    N --> P[Custom Triggers]
+    
+    P --> Q[Type Custom Trigger]
+    Q --> R[Add to Selection]
+    O --> S[Set Duration]
+    R --> S
+    
+    S --> T[Ongoing/Intermittent]
+    T --> U[Add Notes]
+    U --> V[Save Complete Entry]
+    
+    K --> W[Symptom Confirmation]
+    V --> W
+    W --> X[ECG Analysis Triggered]
+    X --> Y[Return to Dashboard]
+    Y --> Z[Entry Appears in Diary]
+    
+    style A fill:#f3e5f5
+    style C fill:#e3f2fd
+    style E fill:#e8f5e8
+    style L fill:#fff3e0
+    style W fill:#e1f5fe
+    style Z fill:#fce4ec
+
