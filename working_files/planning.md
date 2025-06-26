@@ -277,43 +277,345 @@ Phase 2: ✅ Foundation & Mock Data - COMPLETE
    - Session expiration handling
    - Offline-first architecture
 
-### Phase 3 Plan: UI Implementation
+## Phase 3: UI Implementation Plan
 
-#### 3.1 Component Library Setup
-1. Install and configure shadcn/ui
-2. Create base components:
-   - Button (primary, secondary, ghost variants)
-   - Card (for status cards, device cards)
-   - Input (text, password with visibility toggle)
-   - Form components (labels, error states)
-   - Icon system
+### Design System (Based on Screenshots Analysis)
 
-#### 3.2 Navigation Infrastructure
-1. Set up Next.js app router structure
-2. Create layouts:
-   - Auth layout (no navigation)
-   - Main layout (with bottom tabs)
-   - Modal layout (for overlays)
-3. Implement bottom tab navigation:
-   - Dashboard, ECG, Log, Device tabs
-   - Active state indicators
-   - Badge notifications
+#### Visual Identity
+- **Color Palette**:
+  ```css
+  --primary-blue: #0E4DA4;      /* Buttons, links */
+  --dark-navy: #003366;          /* Headers, primary text */
+  --success-green: #4CAF50;      /* Good signal */
+  --error-red: #DC3545;          /* No signal, errors */
+  --warning-orange: #FFA500;     /* Battery icon */
+  --bg-gray: #F5F5F5;           /* Background */
+  --card-white: #FFFFFF;         /* Cards */
+  --text-gray: #666666;          /* Secondary text */
+  --border-gray: #E0E0E0;        /* Dividers */
+  ```
 
-#### 3.3 Authentication Flow (3 screens)
-1. Welcome screen with logo and sign-in button
-2. Sign-in options (email, QR, 6-digit)
-3. Form implementations with mock API integration
+- **Typography**:
+  - Font: System font stack (SF Pro on iOS)
+  - Headers: 24-32px, bold
+  - Body: 16px, regular
+  - Small: 14px, secondary info
+  - Button: 16px, medium weight
 
-#### 3.4 Progressive Screen Implementation
-Follow order based on complexity:
-1. Static screens first (welcome, settings)
-2. Form-based screens (auth, symptom entry)
-3. Data display screens (log, diary)
-4. Complex interactive screens (ECG viewer last)
+- **Component Patterns**:
+  - Full-width primary buttons (blue)
+  - Rounded corners (8px cards, 24px buttons)
+  - Bottom tab navigation with icons
+  - Card-based layouts with shadows
+  - Modal dialogs with dark overlay
+  - Status badges (pill-shaped)
 
-### Ready for Phase 3
-- All mock data infrastructure complete
-- Type definitions provide clear contracts
-- API methods ready for UI integration
-- Real-time subscriptions available
-- Data persistence working
+#### Key UI Elements from Screenshots
+1. **Welcome Screen (IMG_5815)**:
+   - Centered logo and tagline
+   - Custom illustration
+   - Page indicator dots
+   - Primary CTA button
+
+2. **Dashboard (IMG_5824)**:
+   - Greeting header
+   - Signal status card with icon
+   - Progress indicators
+   - Battery optimization modal
+
+3. **ECG Viewer (IMG_5830)**:
+   - Grid paper background
+   - Multi-channel display
+   - Scale selector dropdown
+   - Signal quality badges
+
+4. **Device Pairing (IMG_5819-5823)**:
+   - Step-by-step flow
+   - Device illustrations
+   - Success animations
+   - Connection status icons
+
+### Architecture Overview
+
+#### Tech Stack Integration
+- **Framework**: Next.js 14 with App Router
+- **Styling**: Tailwind CSS + custom design system
+- **Components**: Custom components (shadcn/ui as base)
+- **State Management**: React Context for global state
+- **Forms**: react-hook-form + zod validation
+- **Animations**: Framer Motion for illustrations
+- **Charts**: Canvas API for ECG rendering
+- **Icons**: Custom icon set + Lucide React
+- **Mock Data**: Existing mockAPI singleton
+
+#### File Structure
+```
+src/
+├── app/                          # Next.js 14 app router
+│   ├── (auth)/                   # Auth route group
+│   │   ├── layout.tsx           # No navigation layout
+│   │   ├── welcome/             # Landing page
+│   │   ├── login/               # Login methods
+│   │   └── qr-scan/             # QR scanner
+│   ├── (main)/                   # Main app routes
+│   │   ├── layout.tsx           # Bottom tabs layout
+│   │   ├── dashboard/           # Home dashboard
+│   │   ├── ecg/                 # ECG viewer
+│   │   ├── log/                 # Health log
+│   │   ├── device/              # Device management
+│   │   └── symptom/             # Symptom entry flow
+│   └── globals.css              # Global styles
+├── components/
+│   ├── ui/                       # shadcn/ui components
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   ├── input.tsx
+│   │   ├── dialog.tsx
+│   │   ├── tabs.tsx
+│   │   └── ...
+│   ├── layout/
+│   │   ├── BottomNavigation.tsx
+│   │   ├── TopBar.tsx
+│   │   ├── NavigationDrawer.tsx
+│   │   └── PageTransition.tsx
+│   ├── auth/
+│   │   ├── LoginForm.tsx
+│   │   ├── QRScanner.tsx
+│   │   ├── SixDigitInput.tsx
+│   │   └── AuthMethodSelector.tsx
+│   ├── dashboard/
+│   │   ├── StatusCard.tsx
+│   │   ├── SignalIndicator.tsx
+│   │   ├── HolterProgress.tsx
+│   │   └── BatteryOptimizationModal.tsx
+│   ├── ecg/
+│   │   ├── ECGCanvas.tsx
+│   │   ├── ECGControls.tsx
+│   │   ├── HeartRateDisplay.tsx
+│   │   └── SignalQualityBadge.tsx
+│   ├── health/
+│   │   ├── SymptomCard.tsx
+│   │   ├── BloodPressureCard.tsx
+│   │   ├── TriggerSelector.tsx
+│   │   └── IntensitySlider.tsx
+│   ├── device/
+│   │   ├── DeviceCard.tsx
+│   │   ├── PairingFlow.tsx
+│   │   ├── ConnectionStatus.tsx
+│   │   └── BatteryIndicator.tsx
+│   └── shared/
+│       ├── LoadingSpinner.tsx
+│       ├── ErrorBoundary.tsx
+│       ├── EmptyState.tsx
+│       └── SkeletonLoader.tsx
+├── hooks/
+│   ├── useAuth.tsx              # Auth state management
+│   ├── useECGStream.tsx         # ECG subscription
+│   ├── useDevice.tsx            # Device management
+│   ├── useHealth.tsx            # Health data queries
+│   └── useToast.tsx             # Toast notifications
+├── contexts/
+│   ├── AuthContext.tsx          # Authentication state
+│   ├── DeviceContext.tsx        # Device connection state
+│   └── ThemeContext.tsx         # Theme preferences
+├── lib/
+│   ├── validators/              # Zod schemas
+│   │   ├── auth.ts
+│   │   ├── health.ts
+│   │   └── device.ts
+│   ├── utils.ts                 # Utility functions
+│   └── constants.ts             # App constants
+├── styles/
+│   └── animations.ts            # Framer Motion variants
+├── mock/                        # ✓ Already implemented
+└── types/                       # ✓ Already implemented
+```
+
+### Implementation Phases
+
+#### Phase 3.1: Foundation Setup (Week 1)
+1. **Environment Setup**
+   - Install shadcn/ui CLI and components
+   - Configure Framer Motion
+   - Set up react-hook-form and zod
+   - Configure path aliases
+
+2. **Base Components**
+   - Import shadcn/ui components (Button, Card, Input, etc.)
+   - Create custom theme configuration
+   - Build loading/error/empty states
+   - Implement skeleton loaders
+
+3. **Layout Infrastructure**
+   - App router layouts (auth, main)
+   - Bottom navigation component
+   - Page transition wrapper
+   - Responsive grid system
+
+#### Phase 3.2: Core Features (Week 2)
+1. **Authentication Flow**
+   - AuthContext with mockAPI integration
+   - Welcome screen with animations
+   - Login form with validation
+   - QR scanner mock interface
+   - 6-digit code input component
+   - Session persistence handling
+
+2. **Navigation System**
+   - Bottom tabs with badges
+   - Route guards for auth
+   - Deep linking support
+   - Back navigation handling
+
+3. **Data Hooks**
+   - useAuth hook with session management
+   - useDevice hook for pairing/status
+   - useHealth hook for symptoms/BP
+   - Error handling patterns
+
+#### Phase 3.3: Health Features (Week 3)
+1. **Dashboard Implementation**
+   - Status cards with real data
+   - Signal quality indicator
+   - Holter study progress
+   - Device battery status
+   - Pull-to-refresh functionality
+
+2. **Symptom Entry Flow**
+   - Multi-step form wizard
+   - Symptom selection grid
+   - Intensity slider component
+   - Trigger multi-select
+   - Duration picker
+   - Notes textarea
+   - Confirmation screen
+   - Success animation
+
+3. **Blood Pressure Entry**
+   - Date/time selector
+   - Dual measurement inputs
+   - Arm selection toggle
+   - Historical chart view
+
+#### Phase 3.4: Advanced Features (Week 4)
+1. **ECG Viewer**
+   - Canvas-based waveform renderer
+   - Real-time data subscription
+   - Dual-channel display
+   - Scale controls (5/10/20 mm/mV)
+   - Heart rate display
+   - Signal quality badges
+   - Recording controls
+
+2. **Health Log & Diary**
+   - Calendar view component
+   - Entry list with filters
+   - Detail view modals
+   - Edit/delete functionality
+   - Search implementation
+
+3. **Device Management**
+   - Discovery animation
+   - Pairing flow wizard
+   - Connection status cards
+   - Settings management
+   - Firmware update mock
+
+### State Management Strategy
+
+#### Global State (React Context)
+```typescript
+// AuthContext
+- user: User | null
+- session: AuthSession | null
+- login/logout methods
+- session validation
+
+// DeviceContext  
+- devices: Device[]
+- activeDevice: Device | null
+- connectionStatus
+- pairing methods
+
+// ThemeContext
+- theme preferences
+- ECG scale settings
+- notification settings
+```
+
+#### Local State
+- Form data (react-hook-form)
+- UI state (modals, tabs, etc.)
+- Pagination/filters
+- Temporary selections
+
+#### Data Fetching Pattern
+```typescript
+// Custom hook example
+function useSymptoms() {
+  const [symptoms, setSymptoms] = useState<Symptom[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    mockAPI.getSymptoms()
+      .then(setSymptoms)
+      .catch(setError)
+      .finally(() => setLoading(false));
+  }, []);
+
+  return { symptoms, loading, error, refetch };
+}
+```
+
+### Performance Optimizations
+1. **Code Splitting**
+   - Route-based splitting with Next.js
+   - Lazy load heavy components (ECG viewer)
+   - Dynamic imports for modals
+
+2. **Data Optimization**
+   - Pagination for long lists
+   - Virtual scrolling for logs
+   - Debounced search inputs
+   - Memoized calculations
+
+3. **Rendering Optimization**
+   - React.memo for pure components
+   - useMemo for expensive computations
+   - useCallback for stable references
+   - Skeleton loading states
+
+### Testing Strategy
+1. **Component Testing**
+   - Unit tests with Vitest
+   - Component tests with Testing Library
+   - Mock API responses
+
+2. **Integration Testing**
+   - User flow tests
+   - API integration tests
+   - Navigation tests
+
+3. **E2E Testing**
+   - Critical paths with Playwright
+   - Device pairing flow
+   - Symptom entry flow
+   - Authentication flow
+
+### Accessibility Requirements
+- WCAG 2.1 AA compliance
+- Keyboard navigation support
+- Screen reader announcements
+- High contrast mode support
+- Focus management
+- Error message clarity
+
+### Ready for Implementation
+- ✅ Mock API fully documented and tested
+- ✅ Type definitions complete
+- ✅ Data generators working
+- ✅ Real-time subscriptions available
+- ✅ Authentication methods ready
+- ✅ Device simulation functional
+- ✅ Health data persistence working
