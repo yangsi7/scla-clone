@@ -68,10 +68,17 @@ class MockAPIService {
     
     const user = this.storage.getUser();
     if (email === user.email && password === 'password123') {
+      // Update user's lastLogin timestamp
+      user.lastLogin = new Date();
+      
+      const expiresAt = new Date();
+      expiresAt.setMinutes(expiresAt.getMinutes() + 15); // 15 minutes from now
+      
       const session: AuthSession = {
         accessToken: this.generateToken(),
         refreshToken: this.generateToken(),
         expiresIn: 900, // 15 minutes
+        expiresAt, // Add expiration date
         user
       };
       this.storage.saveSession(session);
@@ -124,6 +131,46 @@ class MockAPIService {
   async logout(): Promise<void> {
     await delay(200);
     this.storage.clearSession();
+  }
+  
+  /**
+   * Gets current logged in user
+   * @returns Current user or null if not logged in
+   */
+  async getCurrentUser(): Promise<User | null> {
+    const session = this.storage.getSession();
+    if (!session || session.expiresAt < new Date()) {
+      return null;
+    }
+    return this.storage.getUser();
+  }
+
+  /**
+   * Checks if there's a valid session
+   * @returns Valid session with user data or null
+   */
+  async checkSession(): Promise<AuthSession | null> {
+    await delay(100); // Simulate API call
+    const session = this.storage.getSession();
+    
+    // Check if session exists and is not expired
+    if (!session || new Date(session.expiresAt) < new Date()) {
+      return null;
+    }
+    
+    // Return session with user data
+    return {
+      ...session,
+      user: this.storage.getUser()
+    };
+  }
+
+  /**
+   * Regenerates all mock data for testing
+   * Useful for getting fresh data with June entries
+   */
+  regenerateData(): void {
+    this.storage.regenerateData();
   }
   
   // Device Management
@@ -525,6 +572,18 @@ class MockAPIService {
    */
   private generateToken(): string {
     return btoa(Math.random().toString(36).substring(2) + Date.now().toString(36));
+  }
+  
+  /**
+   * Forces regeneration of all mock data
+   * @returns Promise that resolves when data is regenerated
+   * 
+   * Useful for testing or resetting the app with fresh data
+   * Regenerates 6 months of symptom and BP history
+   */
+  async regenerateData(): Promise<void> {
+    await delay(500);
+    this.storage.regenerateData();
   }
 }
 

@@ -79,7 +79,9 @@ export class MockDataStorage {
    * - Default preferences
    */
   private initializeData() {
-    if (!this.getData()) {
+    const existingData = this.getData();
+    
+    if (!existingData) {
       const user = generateInitialUser();
       const symptoms = new SymptomGenerator().generateHistoricalSymptoms(user.id, 6);
       const bpReadings = new BloodPressureGenerator().generateHistoricalReadings(user.id, 6);
@@ -99,6 +101,13 @@ export class MockDataStorage {
       };
       
       this.saveData(initialData);
+    } else {
+      // Check if data is missing symptoms or BP readings and regenerate if needed
+      if (!existingData.symptoms || existingData.symptoms.length === 0 || 
+          !existingData.bloodPressureReadings || existingData.bloodPressureReadings.length === 0) {
+        console.log('Missing health data, regenerating...');
+        this.regenerateData();
+      }
     }
   }
   
@@ -468,5 +477,27 @@ export class MockDataStorage {
     }
     
     return study;
+  }
+
+  /**
+   * Forces regeneration of mock data
+   * Useful for testing or resetting the app
+   */
+  regenerateData(): void {
+    const data = this.getData()!;
+    const user = data.user; // Fixed: was data.users[0]
+    
+    // Clear existing health data
+    data.symptoms = [];
+    data.bloodPressureReadings = [];
+    
+    // Regenerate with fresh data
+    const symptomGen = new SymptomGenerator();
+    data.symptoms = symptomGen.generateHistoricalSymptoms(user.id, 6);
+    
+    const bpGen = new BloodPressureGenerator();
+    data.bloodPressureReadings = bpGen.generateHistoricalReadings(user.id, 6); // Changed from 3 to 6 months
+    
+    this.saveData(data);
   }
 }

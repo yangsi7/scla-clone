@@ -29,8 +29,8 @@ export class SymptomGenerator {
     const symptoms: Symptom[] = [];
     const now = new Date();
     
-    for (let i = 0; i < months * 30; i++) {
-      const daysAgo = Math.floor(Math.random() * months * 30);
+    // Generate symptoms for each day in the past months
+    for (let daysAgo = 0; daysAgo < months * 30; daysAgo++) {
       const date = new Date(now);
       date.setDate(date.getDate() - daysAgo);
       
@@ -40,6 +40,21 @@ export class SymptomGenerator {
       for (let j = 0; j < symptomCount; j++) {
         symptoms.push(this.generateSymptom(userId, date));
       }
+    }
+    
+    // Ensure we have some symptoms specifically in June 2024
+    const june2024 = new Date('2024-06-15');
+    if (now > june2024) {
+      // Add guaranteed symptoms for June testing
+      const juneSymptoms = [
+        this.generateSymptom(userId, new Date('2024-06-05')),
+        this.generateSymptom(userId, new Date('2024-06-12')),
+        this.generateSymptom(userId, new Date('2024-06-12')), // Two on same day
+        this.generateSymptom(userId, new Date('2024-06-18')),
+        this.generateSymptom(userId, new Date('2024-06-23')),
+        this.generateSymptom(userId, new Date('2024-06-28'))
+      ];
+      symptoms.push(...juneSymptoms);
     }
     
     return symptoms.sort((a, b) => b.experiencedAt.getTime() - a.experiencedAt.getTime());
@@ -136,6 +151,21 @@ export class BloodPressureGenerator {
         eveningDate.setHours(18 + Math.floor(Math.random() * 4), Math.floor(Math.random() * 60));
         readings.push(this.generateReading(userId, eveningDate, 'evening'));
       }
+    }
+    
+    // Ensure we have some BP readings specifically in June 2024
+    const june2024 = new Date('2024-06-15');
+    if (now > june2024) {
+      // Add guaranteed BP readings for June testing
+      const juneBP = [
+        this.generateReading(userId, new Date('2024-06-07T08:30:00'), 'morning'),
+        this.generateReading(userId, new Date('2024-06-07T19:15:00'), 'evening'),
+        this.generateReading(userId, new Date('2024-06-14T09:00:00'), 'morning'),
+        this.generateReading(userId, new Date('2024-06-21T08:00:00'), 'morning'),
+        this.generateReading(userId, new Date('2024-06-21T20:30:00'), 'evening'),
+        this.generateReading(userId, new Date('2024-06-28T07:45:00'), 'morning')
+      ];
+      readings.push(...juneBP);
     }
     
     return readings.sort((a, b) => b.measuredAt.getTime() - a.measuredAt.getTime());

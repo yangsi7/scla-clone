@@ -27,6 +27,7 @@ export interface AuthSession {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
+  expiresAt: Date;
   user: User;
 }
 

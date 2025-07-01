@@ -1,0 +1,32 @@
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="150" cy="150" r="120" fill="#F3F4F6" opacity="0.5"/>
+  
+  <!-- Plant pot -->
+  <path d="M200 200 L210 230 L190 230 Z" fill="#1E40AF"/>
+  <rect x="185" y="225" width="30" height="5" fill="#1E3A8A"/>
+  
+  <!-- Plant leaves -->
+  <path d="M200 200 Q190 180 195 160" stroke="#60A5FA" stroke-width="3" fill="none"/>
+  <path d="M200 200 Q210 180 205 160" stroke="#60A5FA" stroke-width="3" fill="none"/>
+  <path d="M200 195 Q185 185 180 170" stroke="#93C5FD" stroke-width="2" fill="none"/>
+  <circle cx="195" cy="160" r="8" fill="#60A5FA"/>
+  <circle cx="205" cy="160" r="8" fill="#60A5FA"/>
+  <circle cx="180" cy="170" r="6" fill="#93C5FD"/>
+  
+  <!-- Woman figure -->
+  <circle cx="120" cy="80" r="25" fill="#E5E7EB"/>
+  <path d="M120 80 Q130 85 125 95" fill="#4B5563"/>
+  <rect x="90" y="105" width="60" height="80" rx="10" fill="#93C5FD"/>
+  <rect x="80" y="120" width="20" height="50" rx="10" fill="#DBEAFE"/>
+  <rect x="140" y="120" width="20" height="50" rx="10" fill="#DBEAFE"/>
+  
+  <!-- Phone in hand -->
+  <rect x="142" y="145" width="15" height="20" rx="2" fill="#1F2937"/>
+  
+  <!-- Star decoration -->
+  <path d="M60 60 L65 70 L75 70 L67 77 L70 87 L60 80 L50 87 L53 77 L45 70 L55 70 Z" fill="#FFA500"/>
+  
+  <!-- Dotted circle around star -->
+  <circle cx="60" cy="70" r="30" stroke="#E5E7EB" stroke-width="2" stroke-dasharray="5 5" fill="none"/>
+</svg>

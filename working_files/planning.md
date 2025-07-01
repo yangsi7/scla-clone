@@ -248,6 +248,15 @@ Phase 2: ✅ Foundation & Mock Data - COMPLETE
 - ✅ Created reflection document for Phase 1 & 2
 - ✅ Updated CLAUDE.md with complete references
 
+Phase 3: 🚧 UI Implementation - IN PROGRESS
+- ✅ Created all settings pages
+- ✅ Fixed iPhone frame and navigation issues
+- ✅ Implemented symptom entry flow matching screenshots
+- 🔧 Fixing UI issues:
+  - Time picker interaction in symptom entry
+  - ADD button aspect ratio
+  - Diary tab calendar and UI alignment
+
 ## Implementation Summary
 
 ### Mock Data Features Implemented
@@ -276,6 +285,60 @@ Phase 2: ✅ Foundation & Mock Data - COMPLETE
    - Date revival for JSON parsing
    - Session expiration handling
    - Offline-first architecture
+
+## UI Issues Fix Plan
+
+### 1. Symptom Entry Screen Fixes
+#### Time Picker Interaction
+- **Current**: Static display of time, no interaction
+- **Required**: Clickable time picker that opens modal/dropdown
+- **Implementation**:
+  - Create TimePicker component with hour/minute selection
+  - Use input[type="time"] with custom styling OR
+  - Create custom time picker modal with scrollable hours/minutes
+  - Update AM/PM based on selected time
+
+#### ADD Button Aspect Ratio
+- **Current**: Square button with equal padding
+- **Required**: Wide button with minimal height
+- **Fix**: Adjust padding from `px-6 py-3` to `px-8 py-2`
+
+### 2. Diary Tab Implementation
+#### Calendar Fixes
+- **Day Selection**: Add visual feedback for selected date
+- **Highlighting**: 
+  - Today: Blue background with white text
+  - Selected: Blue border or light blue background
+  - Has entries: Small dot indicator
+- **Week headers**: Display full weekday names on larger screens
+
+#### Screen States
+1. **No Data State** (diary-screen-no-symptom-logged.PNG):
+   - Show welcome illustration
+   - Display explanatory text
+   - Hide entry list
+
+2. **With Data State** (diary-screen-with-symptom-logged.PNG):
+   - Show calendar at top
+   - List entries below with:
+     - Time stamps
+     - Entry type icons (Symptom/BP)
+     - Main symptom/BP value
+     - Triggers/notes preview
+     - Pending Analysis indicator
+   - Timeline indicator on current time
+
+3. **Detailed View** (diary-screen_detailed-day-view.PNG):
+   - Click entry to show modal/new page
+   - Display all symptom details
+   - Show intensity, triggers, duration
+   - Edit/Remove buttons
+
+#### Data Integration
+- Connect to mockAPI to fetch actual logged symptoms/BP
+- Update calendar to show dots on days with entries
+- Sort entries by time
+- Group entries by type if needed
 
 ## Phase 3: UI Implementation Plan
 

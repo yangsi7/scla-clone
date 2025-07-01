@@ -52,11 +52,21 @@
 @layer components {
   /* SCLA Custom Button Styles */
   .scla-button-primary {
-    @apply w-full bg-primary text-primary-foreground font-medium py-4 px-6 rounded-full hover:opacity-90 transition-opacity;
+    @apply w-full bg-primary text-primary-foreground font-medium py-4 px-6 rounded-full 
+           hover:opacity-90 active:scale-95 transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
   }
   
   .scla-button-secondary {
-    @apply w-full bg-white text-primary font-medium py-4 px-6 rounded-full border-2 border-primary hover:bg-gray-50 transition-colors;
+    @apply w-full bg-white text-primary font-medium py-4 px-6 rounded-full border-2 border-primary 
+           hover:bg-gray-50 active:scale-95 transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+  
+  .scla-button-gray {
+    @apply w-full bg-gray-300 text-gray-600 font-medium py-4 px-6 rounded-full 
+           hover:bg-gray-400 active:scale-95 transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
   }
   
   /* Status Badges */
@@ -97,7 +107,7 @@
   
   /* Bottom navigation styles */
   .bottom-nav {
-    @apply fixed bottom-0 left-0 right-0 bg-white border-t border-border;
+    @apply absolute bottom-0 left-0 right-0 bg-white border-t border-border z-40;
   }
   
   .bottom-nav-item {
@@ -106,5 +116,28 @@
   
   .bottom-nav-item.active {
     @apply text-primary;
+  }
+  
+  /* Custom range slider styles */
+  .slider::-webkit-slider-thumb {
+    @apply appearance-none w-6 h-6 bg-primary rounded-full cursor-pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+    @apply w-6 h-6 bg-primary rounded-full cursor-pointer border-0;
+  }
+  
+  /* Animations */
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
   }
 }
